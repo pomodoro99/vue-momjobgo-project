@@ -7,7 +7,7 @@
       <v-list-item-content>
         <v-list-item-title class="text-h6">Vue-Project</v-list-item-title>
         <!-- 로그인한 사람의 이름이 나오도록 구현. -->
-        <v-list-item-subtitle>님 환영합니다. </v-list-item-subtitle>
+        <v-list-item-subtitle>{{getUserName}}님 환영합니다. </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
@@ -53,11 +53,12 @@ export default {
 
   computed: {
     ...mapGetters('page', ['menuList', 'visible']),
+    ...mapGetters('user', ['getUserName']),
 
   },
 
   methods: {
-    ...mapActions('user', ['setToken', 'setUserName', 'setUserId']),
+    ...mapActions('user', ['setToken']),
 
     logout () {
       /**
@@ -65,7 +66,12 @@ export default {
        * 
        * 토큰에 빈값이 들어가면 로그아웃이 된것으로 처리 됨.
        */
-      this.setToken('')
+      if (confirm("로그아웃 하시겠습니까?")) {
+        this.setToken('')
+      } else {
+        return false;
+      }
+
     }
   }
 

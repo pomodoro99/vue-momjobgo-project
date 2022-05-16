@@ -19,6 +19,10 @@ export default {
             return state.user.name
         },
 
+        token (state) {
+            return state.token
+        },
+
         hasToken (state) {
             console.log(`hasToken[${state.token}]`)
             // console.log(`token[${state.token}]`)

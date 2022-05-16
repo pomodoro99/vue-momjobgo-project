@@ -87,8 +87,14 @@ export default {
       if (response.status === 200) {
         //console.log(`resp_token[${response.data.token}]`)
         this.setToken(response.data.token)
-        this.setUserId(this.id)
-        location.href = '/'
+
+        const { data: aaa } = await this.$api(`/api/auth/user`, 'get')
+        // this.setUserInfo(user);
+        //console.log(`name[${user.name}]`)
+        this.setUserName(user.name);
+        this.setUserId(user.id);
+
+        //location.href = '/'   
       }
     }
   },
