@@ -88,7 +88,7 @@ export default {
         //console.log(`resp_token[${response.data.token}]`)
         this.setToken(response.data.token)
 
-        const { data: aaa } = await this.$api(`/api/auth/user`, 'get')
+        const { data: user } = await this.$api(`/api/auth/user`, 'get')
         // this.setUserInfo(user);
         //console.log(`name[${user.name}]`)
         this.setUserName(user.name);
