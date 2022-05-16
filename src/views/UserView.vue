@@ -10,6 +10,7 @@
           disabled
         ></v-text-field>
         <v-text-field
+          ref="pwd"
           v-model="user.pwd"
           label="* 현재 비밀번호"
           type="password"
@@ -21,6 +22,7 @@
           type="password"
         ></v-text-field>
         <v-text-field
+          ref="checkPwd"
           v-model="checkPwd"
           label="새로운 비밀번호 확인"
           type="password"
@@ -76,6 +78,7 @@ export default {
        * vuex 유저정보 갱신 및 text-field 초기화.
        */
       //console.log("UserView-token[" + sessionStorage.getItem("s-token") + "]")    //store.getters['user/token']
+
       const { data: user } = await this.$api(`/api/auth/user`, 'get')
       //   this.setId(user.id);
       //   this.setName(user.name);
@@ -100,6 +103,32 @@ export default {
        * 새로운 비밀번호 입력 시 비밀번호 확인과 일치해야한다.
        * 수정 여부를 확인 한 후 수정한다.
        */
+      if (this.user.pwd == this.checkPwd) {
+        alert("현재비밀번호를 입력하세요")
+        this.$refs.pwd.focus()
+        return false;
+      }
+      if (this.user.newPwd != this.checkPwd) {
+        alert("비밀번호를 다시 체크하세요")
+        this.$refs.checkPwd.focus()
+        return false;
+      }
+
+      if (!confirm("회원정보를 수정하시겠습니까?")) {
+        return false;
+      }
+
+      const response = await this.$api(`/api/auth/user`, "patch", {
+        id: this.user.id,
+        name: this.user.name,
+        newPwd: this.user.newPwd === '' ? null : this.user.newPwd,
+        pwd: this.user.pwd
+      });
+
+      if (response.status === 200) {        //200 아닌 경우 TypeError: Cannot read properties of undefined (reading 'status') 발생
+        alert("수정되었습니다.")
+        this.refreshUser();
+      }
     },
 
     async deleteUser () {
