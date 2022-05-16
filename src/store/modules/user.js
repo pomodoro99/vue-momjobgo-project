@@ -18,6 +18,9 @@ export default {
         getUserName (state) {
             return state.user.name
         },
+        getUserId (state) {
+            return state.user.id
+        },
 
         token (state) {
             return state.token
