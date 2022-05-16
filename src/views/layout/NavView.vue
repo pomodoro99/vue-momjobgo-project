@@ -1,5 +1,8 @@
 <template>
-  <v-navigation-drawer app v-if="visible.footer">
+  <v-navigation-drawer
+    app
+    v-if="visible.footer"
+  >
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="text-h6">Vue-Project</v-list-item-title>
@@ -10,8 +13,16 @@
 
     <v-divider></v-divider>
 
-    <v-list dense nav>
-      <v-list-item v-for="(item, key) in menuList" :key="key" :to="item.path" v-show="item.meta.display">
+    <v-list
+      dense
+      nav
+    >
+      <v-list-item
+        v-for="(item, key) in menuList"
+        :key="key"
+        :to="item.path"
+        v-show="item.meta.display"
+      >
         <v-list-item-icon>
           <v-icon>{{ item.meta.icon }}</v-icon>
         </v-list-item-icon>
@@ -33,25 +44,28 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data: () => ({
-    
+
   }),
 
-  computed : {  
+  computed: {
     ...mapGetters('page', ['menuList', 'visible']),
+
   },
 
-  methods : {
+  methods: {
+    ...mapActions('user', ['setToken', 'setUserName', 'setUserId']),
 
-    logout(){
+    logout () {
       /**
        * 로그아웃 구현.
        * 
        * 토큰에 빈값이 들어가면 로그아웃이 된것으로 처리 됨.
        */
+      this.setToken('')
     }
   }
 

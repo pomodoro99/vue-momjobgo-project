@@ -4,25 +4,54 @@
  */
 export default {
 
-    namespaced : true,
+    namespaced: true,
 
-    state : {
-        token : '',
-        user : {
-            id : '',
-            name : ''
+    state: {
+        token: sessionStorage.getItem("s-token"),
+        user: {
+            id: '',
+            name: ''
         }
     },
 
-    getters : {
+    getters: {
+        getUserName (state) {
+            return state.user.name
+        },
 
+        hasToken (state) {
+            console.log(`hasToken[${state.token}]`)
+            // console.log(`token[${state.token}]`)
+            return !!state.token
+            //return false
+        }
     },
 
-    mutations : {
-
+    mutations: {
+        setToken (state, token) {
+            state.token = token
+            sessionStorage.setItem("s-token", token);       //세션에 토큰 저장
+        },
+        setUserName (state, name) {
+            state.user.name = name
+        },
+        setUserId (state, id) {
+            state.user.id = id
+        },
     },
 
-    actions : {
+    actions: {
+        setToken ({ commit }, token) {
+            commit('setToken', token)
+        },
+
+        setUserName ({ commit }, name) {
+            commit('setUserName', name)
+        },
+
+        setUserId ({ commit }, id) {
+            commit('setUserId', id)
+        }
 
     }
 }
