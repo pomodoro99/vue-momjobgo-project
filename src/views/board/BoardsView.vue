@@ -162,6 +162,12 @@
 
     <!-- 테이블 제목 -->
     <!-- 테이블 제목 클릭시 popDetailModal(item) 메소드를 호출하도록 구현, 댓글 갯수가 제목 옆에 보이도록 구현.-->
+    <template #item.title="{ item }">
+      <span
+        @click="popDetailModal(item)"
+        style="cursor: pointer"
+      > {{ item.title }} <span v-if="item.commentCnt > 0">({{item.commentCnt}}) </span></span>
+    </template>
 
     <!-- 테이블 날짜 -->
     <template #item.createdAt="{ item }">
@@ -420,6 +426,7 @@ export default {
       /**
        * 좋아요 불러오기.
        */
+
     },
 
     clickEmotion (item, index) {
