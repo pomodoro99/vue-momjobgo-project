@@ -51,6 +51,7 @@
                     :color="emotion.value === emotionOn ? 'red' : ''"
                     @click="clickEmotion(emotion, index)"
                     :style="{'margin-right' : '10px'}"
+                    class="changeRed"
                   >{{emotion.icon}}
                   </v-icon>
                 </v-card-text>
@@ -259,6 +260,7 @@ export default {
       contents: "",
     },
 
+    isRed: false,    //아이콘 클릭 시 스타일
   }),
 
   components: {
@@ -422,21 +424,52 @@ export default {
       this.callBoards();
     },
 
-    callEmotion () {
+    async callEmotion () {
       /**
        * 좋아요 불러오기.
        */
+      const response = await this.$api(`/api/board/emotion/${this.selectedItem.bno}`, "get")
 
+      if (response.status === this.HTTP_OK) {
+        this.emotionOn = response.data.emotion
+      }
     },
 
-    clickEmotion (item, index) {
+    async clickEmotion (item, index) {
       /**
        * 감정표현 클릭.
        */
+      const response = await this.$api(`/api/board/emotion/${this.selectedItem.bno}`, "post", {
+        emotion: index
+      });
+
+      if (response.status === this.HTTP_OK || response.status === this.HTTP_CREATED) {
+        //alert("등록되었습니다.")
+        //this.closeEdit()
+        this.callBoards()
+        //this.iconStyle(index)
+      }
+
     },
 
+    iconStyle (index) {
+      // this.emotionList[index].iconStyle.color = 'red';
+      //this.$data.iconStyle.color = '';
+      if (index === 0) {
+        //this.isRed = !this.isRed
+        changeRed[0].style.setProperty('color', 'red')
+        changeRed[1].style.setProperty('color', '')
+        //this.changeRed[1].style.color = '';
+        //this.changeRed = index;
+      } else {
+        changeRed[1].style.setProperty('color', 'red')
+        changeRed[0].style.setProperty('color', '')
+      }
+    }
   }
-
+  //document.querySelector('#test').style.fontSize = '20px';
+  // box.style.setProperty('font-family', 'Georgia, serif', 'important');
 };
 
 </script>
+
