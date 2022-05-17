@@ -26,7 +26,7 @@
 
         <!-- 글 상세 정보 alert -->
         <v-dialog
-          v-model="dialgDetail"
+          v-model="dialogDetail"
           max-width="800px"
         >
           <v-card>
@@ -86,11 +86,13 @@
               v-on="on"
             >
               글 등록
+              <!--글 등록 버튼-->
             </v-btn>
           </template>
           <v-card>
             <v-card-title>
               <span class="text-h5">{{formTitle}}</span>
+              <!--글 등록 or 수정 다이얼로그 타이틀-->
             </v-card-title>
 
             <v-card-text>
@@ -100,6 +102,7 @@
                     <v-text-field
                       label="제목"
                       v-model="selectedItem.title"
+                      autofocus
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
@@ -213,7 +216,7 @@ export default {
     //dialog 관련 변수.
     dialogEdit: false,
     dialogDelete: false,
-    dialgDetail: false,
+    dialogDetail: false,
 
     //검색창.
     search: '',
@@ -275,7 +278,7 @@ export default {
     dialogDelete (val) {
       val || this.closeDelete();
     },
-    dialgDetail (val) {
+    dialogDetail (val) {
       val || this.closeDetail();
     }
   },
@@ -307,11 +310,12 @@ export default {
       this.selectedIndex = this.boards.indexOf(item);
       this.selectedItem = Object.assign({}, item);
       this.callEmotion();
-      this.dialgDetail = true;
+      this.dialogDetail = true;
     },
 
     // 글등록 or 수정 모달 창 on
     popEditModal (item) {
+      //alert(item)
       this.selectedIndex = this.boards.indexOf(item);
       this.selectedItem = Object.assign({}, item);
       this.dialogEdit = true;
@@ -328,6 +332,18 @@ export default {
       /**
        * 게시물 삭제 구현.
        */
+
+      const response = this.$api(`/api/board/${this.selectedItem.bno}`, "delete", {
+        contents: this.selectedItem.contents,
+        title: this.selectedItem.title,
+
+      });
+
+      //if (response.status === this.HTTP_OK) {   //안됨
+      alert("삭제되었습니다.")
+      this.closeDelete()
+      this.callBoards();    //게시판 목록 재호출
+      //}
     },
 
     // 글 등록 or 수정 모달 닫기.
@@ -338,7 +354,7 @@ export default {
 
     // 글 상세 정보 모달 닫기
     closeDetail () {
-      this.dialgDetail = false;
+      this.dialogDetail = false;
       this.clearSelectedItem();
     },
 
@@ -355,15 +371,43 @@ export default {
       this.selectedIndex = -1;
     },
 
-    save () {
+    async save () {
+      //alert(this.isModify)
       if (this.isModify) {
         /**
          * 글 수정.
          */
+        if (confirm("수정하시겠습니까?")) {
+          const response = await this.$api("/api/board", "patch", {
+            bno: this.selectedItem.bno,
+            contents: this.selectedItem.contents,
+            title: this.selectedItem.title,
+
+          });
+
+          if (response.status === this.HTTP_OK || response.status === this.HTTP_CREATED) {
+            alert("수정되었습니다.")
+            this.closeEdit()
+            this.callBoards()
+          }
+        }
       } else {
         /**
          * 글 신규등록.
          */
+        if (confirm("등록하시겠습니까?")) {
+          const response = await this.$api("/api/board", "post", {
+            contents: this.selectedItem.contents,
+            title: this.selectedItem.title,
+
+          });
+
+          if (response.status === this.HTTP_OK || response.status === this.HTTP_CREATED) {
+            alert("등록되었습니다.")
+            this.closeEdit()
+            this.callBoards()
+          }
+        }
       }
     },
 
