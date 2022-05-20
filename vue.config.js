@@ -10,5 +10,8 @@ module.exports = defineConfig({
         changeOrigin: true
       }
     }
-  }
+  },
+
+  outputDir: './docs',
+  publicPath: '/vue-momjobgo-project/'
 })
