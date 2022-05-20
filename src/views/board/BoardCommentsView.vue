@@ -33,6 +33,7 @@
             <td style="max-width: 400px;">{{ item.comment }}
               <v-icon
                 v-if="userId === item.writer"
+                color="primary"
                 small
                 @click="deleteComment(item.id)"
               >delete</v-icon>
@@ -117,10 +118,12 @@ export default {
        * 
        * 댓글 삭제 여부 확인.
        */
-      alert(id)
-      const response = await this.$api(`/api/board/comment/${id}`, "delete");
-      this.callCommentList()
-      this.refreshBoardList()     //게시판 목록 다시 요청
+
+      if (confirm("삭제하시겠습니까?")) {
+        const response = await this.$api(`/api/board/comment/${id}`, "delete");
+        this.callCommentList()
+        this.refreshBoardList()     //게시판 목록 다시 요청
+      }
     },
 
     // 상위 게시판 컴포넌트에 댓글 업데이트를 알림.
