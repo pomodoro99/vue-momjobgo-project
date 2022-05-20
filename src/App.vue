@@ -1,15 +1,15 @@
 <template>
-    <v-app id="app">
-        
-        <NavView></NavView>
-        
-        <HeaderView></HeaderView>
+  <v-app id="app">
 
-        <MainView></MainView>
+    <NavView></NavView>
 
-        <FooterView></FooterView>
-        
-    </v-app>
+    <HeaderView></HeaderView>
+
+    <MainView></MainView>
+
+    <FooterView></FooterView>
+
+  </v-app>
 </template>
 
 <script>
@@ -20,55 +20,67 @@ import MainView from "./views/layout/MainView.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-    name: "App",
+  name: "App",
 
-    data: () => ({}),
+  data: () => ({}),
 
-    components: {
-        NavView,
-        HeaderView,
-        MainView,
-        FooterView,
+  components: {
+    NavView,
+    HeaderView,
+    MainView,
+    FooterView,
+  },
+
+  computed: {
+    ...mapGetters('page', ['menuList', 'basePath', 'getPath']),
+    ...mapGetters('user', ['hasToken'])
+  },
+
+  methods: {
+    ...mapActions('user', ['setUserName', 'setUserId']),
+
+    checkToken () {
+      const nowPath = window.location.pathname;
+      // 현재 토큰이 있는지 확인 .
+      if (this.hasToken && nowPath !== this.getPath('home')) {
+        // 토큰이 존재할 때 홈으로 이동.
+        this.$router.push({ path: this.menuList.home.path });
+      } else if (!this.hasToken && nowPath !== this.getPath('login')) {
+        // 토큰이 없을 때 로그인 페이지로 이동.
+        this.$router.push({ path: this.menuList.login.path });
+      }
     },
 
-    computed : {
-        ...mapGetters('page',['menuList', 'basePath', 'getPath']),
-        ...mapGetters('user',['hasToken'])
-    },
+    async getUserInfo () {
+      /**
+       * 토큰이 있을 때 유저 정보 호출 구현.
+       * 
+       * vuex 유저정보 갱신
+       */
 
-    methods : {
-        
-        checkToken(){
-            const nowPath = window.location.pathname;
-            // 현재 토큰이 있는지 확인 .
-            if( this.hasToken && nowPath !== this.getPath('home')){
-                // 토큰이 존재할 때 홈으로 이동.
-                this.$router.push({ path: this.menuList.home.path });
-            } else if (!this.hasToken && nowPath !== this.getPath('login')){
-                // 토큰이 없을 때 로그인 페이지로 이동.
-                this.$router.push({ path: this.menuList.login.path });
-            }
-        },
-
-        async getUserInfo(){
-            /**
-             * 토큰이 있을 때 유저 정보 호출 구현.
-             * 
-             * vuex 유저정보 갱신
-             */
+      if (this.hasToken) {
+        const response = await this.$api(`/api/auth/user`, 'get')
+        // this.setUserInfo(user);
+        //console.log(`name[${user.name}]`)
+        if (response.status === 200) {
+          this.setUserName(response.data.name);
+          this.setUserId(response.data.id);
         }
-    },
+      }
 
-    created() {
-        this.checkToken();
-        this.getUserInfo();
-    },
-
-    watch: {
-        'hasToken' : function() {
-            this.checkToken();
-        }
     }
+  },
+
+  created () {
+    this.checkToken();
+    this.getUserInfo();     //전체 새로고침 되는 경우 유저 정보 갱신함.
+  },
+
+  watch: {
+    'hasToken': function () {
+      this.checkToken();
+    }
+  }
 
 };
 </script>

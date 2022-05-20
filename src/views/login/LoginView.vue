@@ -88,13 +88,14 @@ export default {
         //console.log(`resp_token[${response.data.token}]`)
         this.setToken(response.data.token)
 
-        const { data: user } = await this.$api(`/api/auth/user`, 'get')
-        // this.setUserInfo(user);
-        //console.log(`name[${user.name}]`)
-        this.setUserName(user.name);
-        this.setUserId(user.id);
+        /*app.vue getUserInfo에서 유저정보 가져오는 것으로 변경함*/
+        // const { data: user } = await this.$api(`/api/auth/user`, 'get')
+        // // this.setUserInfo(user);
+        // //console.log(`name[${user.name}]`)
+        // this.setUserName(user.name);
+        // this.setUserId(user.id);
 
-        //location.href = '/'   
+        //location.href = '/'   //이부분이 없어도 페이지 바뀜.
       }
     }
   },

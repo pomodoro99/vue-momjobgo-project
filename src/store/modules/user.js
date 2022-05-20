@@ -10,7 +10,7 @@ export default {
         token: sessionStorage.getItem("s-token"),
         user: {
             id: '',
-            name: ''
+            name: '',
         }
     },
 
@@ -41,6 +41,7 @@ export default {
         },
         setUserName (state, name) {
             state.user.name = name
+            //sessionStorage.setItem("s-user", name);     //세션에 유저네임 저장해서 새로고침하더라도 가져올 수 있도록..but 로그아웃 시 에러로 인해 변경
         },
         setUserId (state, id) {
             state.user.id = id
@@ -53,6 +54,7 @@ export default {
         },
 
         setUserName ({ commit }, name) {
+            //console.log(`setUserName[${name}]`)
             commit('setUserName', name)
         },
 

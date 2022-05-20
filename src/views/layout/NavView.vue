@@ -58,7 +58,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('user', ['setToken']),
+    ...mapActions('user', ['setToken'], ['setUserName']),
 
     logout () {
       /**
@@ -67,7 +67,10 @@ export default {
        * 토큰에 빈값이 들어가면 로그아웃이 된것으로 처리 됨.
        */
       if (confirm("로그아웃 하시겠습니까?")) {
-        this.setToken('')
+        this.setToken('')   //세션값을 비워준다.
+        //this.setUserName('')    //세션 처리 하려고 했으나 로그아웃 시 TypeError: this.setUserName is not a function 경고?
+
+        //location.href = '/'     //로그아웃 후 로그인화면으로 바로 바뀌는데 app.vue의 watch에서 checkToken 때문인 것 같음.
       } else {
         return false;
       }
