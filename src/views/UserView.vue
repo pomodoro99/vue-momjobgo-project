@@ -69,7 +69,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('user', ['setUserId', 'setUserName']),
+    ...mapActions('user', ['setToken', 'setUserId', 'setUserName']),
 
     async refreshUser () {
       /**
@@ -137,6 +137,17 @@ export default {
        * 
        * 삭제 여부를 확인 한 후 삭제한다.
        */
+
+      if (!confirm("회원정보를 삭제하시겠습니까?")) {
+        return false;
+      }
+
+      const response = await this.$api(`/api/auth/user`, "delete");
+
+      if (response.status === 200) {
+        alert("삭제되었습니다.")
+        this.setToken('')
+      }
     }
   },
 }
