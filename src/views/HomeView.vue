@@ -40,13 +40,14 @@
           <div class="d-flex flex-no-wrap justify-space-between">
             <div
               align="left"
-              @click="onClickRedirect(item.url)"
+              @click="onClickRedirect(item.link)"
+              style="cursor: pointer"
             >
               <v-card-title
                 class="text-h5"
                 v-html="item.title"
               ></v-card-title>
-              <v-card-subtitle v-html="item.contents"></v-card-subtitle>
+              <v-card-subtitle v-html="item.description"></v-card-subtitle>
             </div>
             <v-avatar
               class="ma-3"
@@ -83,22 +84,25 @@ export default {
 
   methods: {
     callData () {
-      axios.get("/v1/search/webkr.json", {      //axios의 결과가  promise이다
+      axios.get(`${location.origin}/v1/search/webkr.json`, {      //axios의 결과가  promise이다
         headers: {
-          "X-Naver-Client-Id": "8x1NIuLCel90bvpW_mwb",
-          "X-Naver-Client-Secret": "hI7_xn7PSo"
+          "X-Naver-Client-Id": process.env.VUE_APP_NAVER_ID,
+          "X-Naver-Client-Secret": process.env.VUE_APP_NAVER_PW,
         },
         params: {
           query: this.search
         }
       }).then(response => {
         console.log(response)
-        //this.list = response.data.documents;
+        this.list = response.data.items;
       }).catch(error => {
         console.error(error)
       })
     },
 
+    onClickRedirect: function (url) {
+      window.open(url, "_blank");
+    }
   }
 }
 </script>
