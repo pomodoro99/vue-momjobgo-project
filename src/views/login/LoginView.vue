@@ -15,6 +15,7 @@
             label="Id"
             v-model="id"
             @keyup.enter="$refs.pwd.focus()"
+            autofocus
           />
           <v-text-field
             ref="pwd"
@@ -95,7 +96,8 @@ export default {
         // this.setUserName(user.name);
         // this.setUserId(user.id);
 
-        location.href = '/'   //이부분이 없어도 페이지는 바뀌나 navview에서 유저네임 표시 안됨.
+        // location.href = '/'   //이부분이 없어도 페이지는 바뀌나 navview에서 유저네임 표시 안됨.
+        location.href = this.basePath;
       }
     }
   },
