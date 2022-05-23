@@ -49,7 +49,7 @@
 <script>
 import SignUpModalViewVue from "./SignUpModalView.vue";
 
-import { mapActions } from "vuex"
+import { mapGetters, mapActions } from "vuex"
 //import axios from "axios"
 
 export default {
@@ -68,10 +68,13 @@ export default {
     this.setAllVisible(true);
   },
 
+  computed: {
+    ...mapGetters('page', ['basePath']),
+  },
+
   methods: {
     ...mapActions('page', ['setAllVisible']),
     ...mapActions('user', ['setToken', 'setUserName', 'setUserId']),
-
 
     async login () {
       /**
