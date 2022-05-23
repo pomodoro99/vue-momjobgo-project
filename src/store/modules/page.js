@@ -5,110 +5,110 @@ import BoardView from '@/views/board/BoardsView.vue'
 
 export default {
 
-    namespaced : true,
+    namespaced: true,
 
-    state : {
+    state: {
 
         // header 부분의 제목.
-        title : '',
+        title: '',
 
         // basepath가 있다면 지정.
-        basePath : '',
+        basePath: '/vue-momjobgo-project/',
 
         // router와 nav의 목록 리스트에 동시에 적용되는 list, display에 nav노출이 결정된다.
-        list : {
-            home : {
+        list: {
+            home: {
                 path: `/home`,
                 name: `home`,
                 meta: {
                     title: `Home`,
                     icon: `home`,
-                    display : true
+                    display: true
                 },
-                component : HomeView
+                component: HomeView
             },
-            
-            board : {
+
+            board: {
                 path: `/board`,
                 name: `board`,
                 meta: {
                     title: `Board`,
                     icon: `table_rows`,
-                    display : true
+                    display: true
                 },
-                component : BoardView
+                component: BoardView
             },
-            
-            user : {
+
+            user: {
                 path: `/user`,
                 name: `user`,
                 meta: {
                     title: `User`,
                     icon: `account_circle`,
-                    display : true
+                    display: true
                 },
-                component : UserView
+                component: UserView
             },
 
-            login : {
+            login: {
                 path: `/login`,
                 name: `login`,
                 meta: {
                     title: `Login`,
                     icon: ``,
-                    display : false
+                    display: false
                 },
-                component : LoginView
+                component: LoginView
             },
 
         },
 
         // 템플릿 태그들의 존재 유무를 결정함.
-        visible : {
-            header : true,
-            navi : true,
-            footer : true
+        visible: {
+            header: true,
+            navi: true,
+            footer: true
         }
 
     },
 
-    getters : {
-        title(state){
+    getters: {
+        title (state) {
             return state.title;
         },
 
-        basePath(state){
+        basePath (state) {
             return state.basePath;
         },
 
-        menuList(state){
+        menuList (state) {
             return state.list;
         },
 
-        visible(state){
+        visible (state) {
             return state.visible;
         },
 
         // list의 object키를 파라미터로 받으면 해당 키에 대한 path를 베이스 path와 합쳐서 반환.
-        getPath : (state, getters) => listKey => {
+        getPath: (state, getters) => listKey => {
             return `${getters.basePath}${state.list[listKey].path}`
         }
     },
 
-    mutations : {
-        setTitle(state, title){
+    mutations: {
+        setTitle (state, title) {
             state.title = title;
         },
 
-        setAllVisible(state, value){
+        setAllVisible (state, value) {
             state.visible.header = value;
             state.visible.navi = value;
             state.visible.footer = value;
         }
     },
 
-    actions : {
-        setTitle({commit}, title){
+    actions: {
+        setTitle ({ commit }, title) {
             commit('setTitle', title);
         },
 
@@ -117,7 +117,7 @@ export default {
          * @param {*} param0 
          * @param {*} value 
          */
-        setAllVisible({commit}, value){
+        setAllVisible ({ commit }, value) {
             commit('setAllVisible', value);
         }
 
